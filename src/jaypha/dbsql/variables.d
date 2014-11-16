@@ -10,7 +10,7 @@
  * Authors: Jason den Dulk
  */
 
-module jaypha.dbms.variables;
+module jaypha.dbsql.variables;
 
 import jaypha.types;
 import jaypha.io.serialize;

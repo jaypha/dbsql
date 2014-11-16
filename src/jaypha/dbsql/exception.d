@@ -10,7 +10,7 @@
  * Authors: Jason den Dulk
  */
 
-module jaypha.dbms.exception;
+module jaypha.dbsql.exception;
 
 import std.conv;
 

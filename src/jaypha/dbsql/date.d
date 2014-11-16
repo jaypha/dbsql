@@ -25,12 +25,12 @@ import std.array;
 DateTime toDateTime(string sqlTime)
 {
   DateTime t;
-  return t.fromISOExtString(mysqlTime.replaceFirst(" ", "T"));
+  return t.fromISOExtString(sqlTime.replaceFirst(" ", "T"));
 }
 
 SysTime toSysTime(string sqlTime, immutable TimeZone tz = null)
 {
-  return SysTime(toDateTime(mysqlTime),tz);
+  return SysTime(toDateTime(sqlTime),tz);
 }
 
 string toSqlTime(DateTime time)
