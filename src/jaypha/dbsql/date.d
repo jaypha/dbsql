@@ -38,7 +38,7 @@ string toSqlTime(DateTime time)
   return time.toISOExtString().replaceFirst("T", " ");
 }
 
-string toSqlTime(SysTime time, immutable TimeZone tz)
+string toSqlTime(SysTime time, immutable TimeZone tz = null)
 {
   if (tz is null)
     return time.toLocalTime().toISOExtString().replaceFirst("T", " ");

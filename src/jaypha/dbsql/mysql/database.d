@@ -264,7 +264,8 @@ final class MySqlDatabase
   // values are expected to be already vetted. Functions will enquote.
   //
 
-  string getInsertId() { return to!string(mysql_insert_id(mysql)); }
+  @property string insertId() { return to!string(mysql_insert_id(mysql)); }
+  string getInsertId() { return insertId; }
 
   //---------------------------------------------------------------------------
 
@@ -290,8 +291,8 @@ final class MySqlDatabase
 
   //---------------------------------------------------------------------------
 
-/*
-  ulong insert(string tablename, string[] columns, string[][] values)
+
+  void insert(string tablename, string[] columns, string[][] values)
   {
     auto str = appender!string();
 
@@ -300,12 +301,16 @@ final class MySqlDatabase
     str.put("` (");
     str.put(columns.join(","));
     str.put(") values (");
-    //... TODO str.put(values.map!((a) => map!((b) => quote(b)).join(",")).join("),("));
+    //... TODO may be flakey.
+
+    string[] vSql;
+    foreach (v;values)
+      vSql ~= v.map!((a) => quote(a)).join(",");
+    str.put(vSql.join("),("));
     str.put(")");
     query(str.data);
-    return get_insert_id();
   }
-*/
+
 
   //---------------------------------------------------------------------------
 
