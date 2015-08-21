@@ -110,7 +110,7 @@ final class MySqlDatabase
 
   string inList(T)(T[] list)
   {
-    if (list.length == 0) return ("0");
+    if (list.empty) return ("0");
     static if (is(T == string))
       return "("~map!(a => quote(a))(list).join(",")~")";
     else
@@ -268,6 +268,8 @@ final class MySqlDatabase
   string getInsertId() { return insertId; }
 
   //---------------------------------------------------------------------------
+  // Insert a single row. Names and values are given as an AA. Return the ID
+  // for the row
 
   string insert(string tablename, string[string] values)
   {
@@ -275,14 +277,16 @@ final class MySqlDatabase
   }
 
   //---------------------------------------------------------------------------
+  // Insert a single row. Names and values are given separately. Return the ID
+  // for the row
 
   string insert(string tablename, string[] columns, string[] values)
   {
     query_raw
     (
-      "insert into `"~tablename~"` (" ~
-      columns.join(",") ~
-      ") values (" ~
+      "insert into `"~tablename~"` (`" ~
+      columns.join("`,`") ~
+      "`) values (" ~
       values.map!((a) => quote(a)).join(",") ~
       ")"
     );
@@ -290,7 +294,7 @@ final class MySqlDatabase
   }
 
   //---------------------------------------------------------------------------
-
+  // Insert a number of rows.
 
   void insert(string tablename, string[] columns, string[][] values)
   {
@@ -406,6 +410,14 @@ final class MySqlDatabase
   void remove(string tablename, string id)
   {
     query("delete from `"~tablename~"` where id="~id);
+  }
+
+  void remove(string tablename, string[] ids)
+  {
+    if (ids.empty)
+      return;
+    else
+      query("delete from `"~tablename~"` where id in "~inList(ids));
   }
 
   //---------------------------------------------------------------------------

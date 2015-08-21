@@ -21,6 +21,16 @@ import std.array;
  * need to supply its timezone, otherwise you can use the defaults.
  */
 
+Date toDate(string sqlDate)
+{
+  Date t;
+  return t.fromISOExtString(sqlDate);
+}
+
+string toSqlDate(Date date)
+{
+  return date.toISOExtString();
+}
 
 DateTime toDateTime(string sqlTime)
 {
